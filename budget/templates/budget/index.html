@@ -1,0 +1,20 @@
+{% extends 'budget/base.html' %}
+
+{% block body %}
+
+    <div>
+        <h1>Welcome to the HOMEPAGE!</h1>
+        <li>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+            {% endif %}
+        </li>
+    </div>
+
+{% endblock %}
+
+
+
+
