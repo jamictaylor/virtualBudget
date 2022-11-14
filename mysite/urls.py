@@ -21,8 +21,8 @@ from users import views as user_views
 from budget import views as budget_views
 from django.contrib.auth import views as authentication_views
 #next two are for local deployment of images.  won't be needed when in production - Jami
-from django.conf import settings
-from django.conf.urls.static import static
+#from django.conf import settings
+#from django.conf.urls.static import static
 
 # router = routers.DefaultRouter()
 # router.register('category-rest', CategoryViewSet)
@@ -45,6 +45,6 @@ urlpatterns = [
 
 
 #this is for images.  Will be different in production
-urlpatterns += [
+#urlpatterns += [
     # ... the rest of your URLconf goes here ...
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

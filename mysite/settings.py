@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 
 #media root for profile pic - Jami
-MEDIA_ROOT = os.path.join(BASE_DIR, 'pictures')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'pictures')
 
 #media path - Jami
-MEDIA_URL = '/pictures/'
+#MEDIA_URL = '/pictures/'
