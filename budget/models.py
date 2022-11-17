@@ -5,16 +5,28 @@ from django.contrib.auth.models import User
 
 
 class Category(models.Model):
+    CATEGORY_INCOME = "INCOME"
+    CATEGORY_EXPENSE = "EXPENSE"
+    DEFAULT_CATEGORIES = [
+        {"name": 'house', "type": CATEGORY_INCOME},
+        {"name": 'vacation', "type": CATEGORY_INCOME},
+    ]
+
     def __str__(self):
         return self.name
 
     name = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     CATEGORY_TYPE_CHOICES = [
-        ("INCOME", "Income"),
-        ("EXPENSE", "Expense")
+        (CATEGORY_INCOME, "Income"),
+        (CATEGORY_EXPENSE, "Expense")
     ]
-    type = models.CharField(max_length=8, choices=CATEGORY_TYPE_CHOICES, default="EXPENSE")
+    type = models.CharField(max_length=8, choices=CATEGORY_TYPE_CHOICES, default=CATEGORY_EXPENSE)
+
+    @staticmethod
+    def create_default_categories(user):
+        for category in Category.DEFAULT_CATEGORIES:
+            Category.objects.create(user=user, **category)
 
 
 class Label(models.Model):
