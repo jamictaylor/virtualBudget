@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.contrib import messages
+from datetime import date
+
 # from rest_framework import viewsets
 # from .serializers import CategorySerializer, LabelSerializer, TransactionSerializer
 from .models import Category, Label, Transaction
@@ -18,20 +20,47 @@ def index(request):
 
 
 def dashboard(request):
-    transactions_list = Transaction.objects.all()
-    categories_list = Category.objects.all()
-    labels_list = Label.objects.all()
+    user = request.user
+    categories_list = Category.objects.filter(user=user) if user.is_authenticated else Label.objects.all()
+    category_names = list(categories_list.values_list('name', flat=True))
+    category_types = list(categories_list.values_list('type', flat=True))
+    labels_list = Label.objects.filter(user=user) if user.is_authenticated else Label.objects.all()
+    label_names = list(labels_list.values_list('name', flat=True))
+    label_category = list(labels_list.values_list('category', flat=True))
+    label_amountRec = list(labels_list.values_list('amount_received', flat=True))
+    label_amountPlanned = list(labels_list.values_list('amount_planned', flat=True))
+    transactions_list = Transaction.objects.filter(user=user) if user.is_authenticated else Label.objects.all()
+    transaction_description = list(transactions_list.values_list('description', flat=True))
+    transaction_type = list(transactions_list.values_list('type', flat=True))
+    transaction_label = list(transactions_list.values_list('label', flat=True))
+    transaction_amount = list(transactions_list.values_list('amount', flat=True))
+    transaction_date = list(transactions_list.values_list('date', flat=True))
     template = loader.get_template('budget/dashboard.html')
     context = {
-        'transactions_list': transactions_list,
         'categories_list': categories_list,
-        'labels_list': labels_list
+        'category_names': category_names,
+        'category_types': category_types,
+        'labels_list': labels_list,
+        'label_names': label_names,
+        'label_category': label_category,
+        'label_amountRec': label_amountRec,
+        'label_amountPlanned': label_amountPlanned,
+        'transactions_list': transactions_list,
+        'transaction_description': transaction_description,
+        'transaction_type': transaction_type,
+        'transaction_label': transaction_label,
+        'transaction_amount': transaction_amount,
+        'transaction_date': transaction_date,
+
     }
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def transactions(request):
+    user = request.user
     transactions_list = Transaction.objects.all()
+    #transactions_list = Transaction.objects.filter(user=user) if user.is_authenticated else Transaction.objects.all()
     template = loader.get_template('budget/transactions.html')
     context = {
         'transactions_list': transactions_list,
@@ -74,12 +103,15 @@ def delete_transaction(request, id):
 
 
 def budget(request):
-    categories_list = Category.objects.all()
-    labels_list = Label.objects.all()
+    user = request.user
+    current_time = date
+    categories_list = Category.objects.filter(user=user) if user.is_authenticated else Category.objects.all()
+    labels_list = Label.objects.filter(user=user) if user.is_authenticated else Label.objects.all()
     template = loader.get_template('budget/budget.html')
     context = {
         'categories_list': categories_list,
-        'labels_list': labels_list
+        'labels_list': labels_list,
+        'current_time': current_time
     }
     return HttpResponse(template.render(context, request))
 
@@ -163,18 +195,4 @@ def reports(request):
         'labels_list': labels_list
     }
     return HttpResponse(template.render(context, request))
-
-
-
-# JUST FOR TESTING!
-# class CategoryViewSet(viewsets.ModelViewSet):
-#     queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-
-
-# JUST FOR TESTING!
-# class CatExpenseViewSet(viewsets.ModelViewSet):
-#     queryset = Category.objects.filter(type='EXPENSE')
-#     serializer_class = CategorySerializer
-
 

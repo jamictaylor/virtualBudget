@@ -19,6 +19,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Label</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Date</th>
@@ -30,6 +31,7 @@
                                 {% for transaction in transactions_list %}
                                 <tr>
                                     <th scope="row">{{ transaction.id }}</th>
+                                    <th scope="row">{{ transaction.type }}</th>
                                     <td>{{ transaction.label }}</td>
                                     <td>{{ transaction.description }}</td>
                                     <td>{{ transaction.date }}</td>
