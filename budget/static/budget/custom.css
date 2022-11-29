@@ -107,13 +107,14 @@ ul {
 }
 
 .accordion-item {
-    background-color: #19313C;
+    background-color: #19313C !important;
     color: white;
 }
 
 .accordion-button {
-    background-color: #386780;
+    background-color: #386780 !important;
 }
+
 
 .btn-primary {
     background-color: #EE7738 !important;
@@ -124,3 +125,4 @@ ul {
     background-color: #d66b32 !important;
     border-color: #d66b32 !important;
 }
+
